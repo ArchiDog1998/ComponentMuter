@@ -4,7 +4,6 @@ using Grasshopper.Kernel;
 using HarmonyLib;
 using System;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace ComponentMuter;
@@ -25,6 +24,8 @@ public class ComponentMuterInfo : GH_AssemblyInfo
 
     //Return a string representing your preferred contact details.
     public override string AuthorContact => "1123993881@qq.com";
+
+    public override string Version => "1.0.0";
 }
 
 partial class SimpleAssemblyPriority
