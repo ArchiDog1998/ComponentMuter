@@ -11,10 +11,12 @@ internal class ComponentAttributePatch
     [HarmonyPatch("Render")]
     static void Postfix(GH_ComponentAttributes __instance, GH_Canvas canvas, Graphics graphics, GH_CanvasChannel channel)
     {
-        if (channel != GH_CanvasChannel.Wires) return;
+        if (!Data.Enable) return;
 
         var component = __instance.Owner;
         if (!component.IsMute()) return;
+
+        if (channel != GH_CanvasChannel.Wires) return;
 
         if (!ComponentPatch._recordedDict.TryGetValue(component, out var list)) return;
 

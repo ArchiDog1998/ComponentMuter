@@ -1,21 +1,19 @@
-﻿using Grasshopper;
-using Grasshopper.GUI;
+﻿using Grasshopper.GUI;
 using Grasshopper.Kernel;
 using HarmonyLib;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace ComponentMuter;
 public class ComponentMuterInfo : GH_AssemblyInfo
 {
-    public override string Name => "ComponentMuter";
+    public override string Name => "Component Muter";
 
     //Return a 24x24 pixel bitmap to represent this GHA library.
     public override Bitmap Icon => null!;
 
     //Return a short string describing the purpose of this GHA library.
-    public override string Description => "";
+    public override string Description => "Mute the component as you want.";
 
     public override Guid Id => new ("3181bf96-debc-4700-bce9-d0482f253ee9");
 
@@ -25,36 +23,22 @@ public class ComponentMuterInfo : GH_AssemblyInfo
     //Return a string representing your preferred contact details.
     public override string AuthorContact => "1123993881@qq.com";
 
-    public override string Version => "1.0.0";
+    public override string Version => typeof(ComponentMuterInfo).Assembly.GetName().Version?.ToString() ?? "unknown";
 }
 
 partial class SimpleAssemblyPriority
 {
+    protected override int? MenuIndex => 4;
+
+    protected override int InsertIndex => 10;
+
     internal static Harmony? _harmony;
     protected override void DoWithEditor(GH_DocumentEditor editor)
     {
         _harmony = new Harmony("Grasshopper.ComponentMuter");
         _harmony.PatchAll();
 
-        CustomShortcuts[Keys.M] = () =>
-        {
-            var doc = Instances.ActiveCanvas.Document;
-            if (doc == null) return;
-
-            bool any = false;
-            foreach (var obj in doc.SelectedObjects())
-            {
-                if (obj is not IGH_Component component) continue;
-                component.SetMute(!component.IsMute());
-                component.ExpireSolution(false);
-                any = true;
-            }
-
-            if (any)
-            {
-                doc.NewSolution(false);
-            }
-        };
+        CustomShortcuts[System.Windows.Forms.Keys.M] = () => Data.Toggle = false;
 
         base.DoWithEditor(editor);
     }

@@ -18,6 +18,7 @@ internal class ComponentPatch
     [HarmonyPatch("ComputeData")]
     static void Prefix(GH_Component __instance)
     {
+        if (!Data.Enable) return;
         if (!__instance.IsMute()) return;
 
         var type = __instance.GetType();

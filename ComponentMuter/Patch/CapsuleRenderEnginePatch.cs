@@ -9,6 +9,7 @@ internal class CapsuleRenderEnginePatch
     [HarmonyPatch(nameof(GH_CapsuleRenderEngine.GetImpliedPalette))]
     static bool Prefix(ref GH_Palette __result, IGH_ActiveObject obj)
     {
+        if (!Data.Enable) return true;
         if (obj is not IGH_Component component) return true;
         if (!component.IsMute()) return true;
 
